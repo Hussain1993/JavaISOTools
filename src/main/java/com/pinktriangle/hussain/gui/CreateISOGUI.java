@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Arrays;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -18,8 +19,8 @@ import javax.swing.JScrollPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CreateISO extends JFrame {
-	private static final Logger LOG = LoggerFactory.getLogger(CreateISO.class);
+public class CreateISOGUI extends JFrame {
+	private static final Logger LOG = LoggerFactory.getLogger(CreateISOGUI.class);
 	private static final long serialVersionUID = 1L;
 	private static final String USER_HOME = System.getProperty("user.home");
 	
@@ -33,7 +34,7 @@ public class CreateISO extends JFrame {
 	
 	private JFileChooser chooser;
 
-	public CreateISO(){
+	public CreateISOGUI(){
 		super("Create ISO Disk Image");
 		setSize(new Dimension(550, 300));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -59,7 +60,6 @@ public class CreateISO extends JFrame {
 		
 		filesAndFolders = new JList();
 		filesAndFolders.setModel(listModel);
-		
 	}
 	
 	private void setLayout(){
@@ -89,8 +89,20 @@ public class CreateISO extends JFrame {
 		createISO.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent event) {
-				// TODO Auto-generated method stub
-				
+				int listSize = listModel.getSize();
+				File [] filesToBeAdded = new File[listSize];
+				if(listSize == 0)
+				{
+					//TODO Show error to the user
+				}
+				else
+				{
+					for(int i = 0; i < listSize; i++)
+					{
+						filesToBeAdded[i] = (File) listModel.get(i);
+					}
+					LOG.trace("Creating the ISOs with the following files and folders: "+Arrays.toString(filesToBeAdded));
+				}
 			}
 		});
 		

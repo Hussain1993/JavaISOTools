@@ -11,7 +11,7 @@ import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.pinktriangle.hussain.gui.CreateISO;
+import com.pinktriangle.hussain.gui.CreateISOGUI;
 
 public class Main {
 	private static final Logger LOG = LoggerFactory.getLogger(Main.class);
@@ -33,7 +33,7 @@ public class Main {
 				if(optionValue.equals("c"))
 				{
 					LOG.trace("The c option was passed in, showing the create ISO GUI now");
-					new CreateISO().setVisible(true);
+					new CreateISOGUI().setVisible(true);
 				}
 				else if(optionValue.equals("e"))
 				{
