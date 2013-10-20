@@ -5,9 +5,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -27,10 +29,12 @@ public class CreateISO extends JFrame {
 	
 	private DefaultListModel listModel;
 	private JList filesAndFolders;
+	
+	private JFileChooser chooser;
 
 	public CreateISO(){
 		super("Create ISO Disk Image");
-		setSize(new Dimension(300, 300));
+		setSize(new Dimension(550, 300));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		initWidgets();
@@ -41,9 +45,15 @@ public class CreateISO extends JFrame {
 	
 	private void initWidgets(){
 		listModel = new DefaultListModel();
+		chooser = new JFileChooser();
+		chooser.setCurrentDirectory(new File("."));
+		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		chooser.setDialogTitle("Choose files and folders to add to the ISO image");
+		chooser.setAcceptAllFileFilterUsed(true);
 		
 		panelNorth = new JPanel();
 		addFile = new JButton("Add File/Folder");
+		removeFile = new JButton("Remove file");
 		createISO = new JButton("Create ISO");
 		
 		filesAndFolders = new JList();
@@ -57,6 +67,7 @@ public class CreateISO extends JFrame {
 	private void addWidgets(){
 		panelNorth.add(addFile);
 		panelNorth.add(createISO);
+		panelNorth.add(removeFile);
 		
 		this.add(panelNorth,BorderLayout.NORTH);
 		this.add(new JScrollPane(filesAndFolders), BorderLayout.CENTER);
@@ -66,7 +77,10 @@ public class CreateISO extends JFrame {
 		addFile.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent event) {
-				listModel.addElement("Some element");
+				if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+				{
+					listModel.addElement(chooser.getSelectedFile());
+				}
 			}
 		});
 		
