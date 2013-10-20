@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 public class CreateISO extends JFrame {
 	private static final Logger LOG = LoggerFactory.getLogger(CreateISO.class);
 	private static final long serialVersionUID = 1L;
+	private static final String USER_HOME = System.getProperty("user.home");
 	
 	private JPanel panelNorth;
 	private JButton addFile;
@@ -46,18 +47,19 @@ public class CreateISO extends JFrame {
 	private void initWidgets(){
 		listModel = new DefaultListModel();
 		chooser = new JFileChooser();
-		chooser.setCurrentDirectory(new File("."));
+		chooser.setCurrentDirectory(new File(USER_HOME));
 		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 		chooser.setDialogTitle("Choose files and folders to add to the ISO image");
 		chooser.setAcceptAllFileFilterUsed(true);
 		
 		panelNorth = new JPanel();
 		addFile = new JButton("Add File/Folder");
-		removeFile = new JButton("Remove file");
+		removeFile = new JButton("Remove File(s)/Folder(s)");
 		createISO = new JButton("Create ISO");
 		
 		filesAndFolders = new JList();
 		filesAndFolders.setModel(listModel);
+		
 	}
 	
 	private void setLayout(){
@@ -95,8 +97,19 @@ public class CreateISO extends JFrame {
 		removeFile.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent event) {
-				// TODO Auto-generated method stub
-				
+				int [] selectedItems = filesAndFolders.getSelectedIndices();
+				if(selectedItems.length == 0)
+				{
+					LOG.error("There are no items to remove");
+				}
+				else
+				{
+					LOG.trace("Removing items from the JList");
+					for(int i = selectedItems.length - 1; i >= 0; i--)
+					{
+						listModel.removeElementAt(selectedItems[i]);
+					}
+				}
 			}
 		});
 	}
